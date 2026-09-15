@@ -7,18 +7,21 @@
 <meta name="description" content="A native macOS pomodoro timer that lives in the menu bar and records every focused minute into a heatmap.">
 <style>
   :root {
-    --void: #08090b; --panel: #101216; --hairline: #23272f;
+    --void: #08090b; --hairline: #23272f;
     --text: #e6e9ef; --dim: #7c8494; --flow: #44d62c; --bright: #7cff4f;
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
   }
   * { box-sizing: border-box; }
-  body { background: var(--void); color: var(--text); font-family: var(--mono); }
+  body { margin: 0; background: var(--void); color: var(--text); font-family: var(--mono); }
   a { color: var(--flow); }
 
+  /* The shots are rendered on the same #08090b, so nothing behind them is
+     tinted — a fill of any other black would show as a seam. */
   .wrap {
-    min-height: 100vh; display: grid; gap: 40px; align-items: center;
-    grid-template-columns: minmax(280px, 380px) 1fr;
-    max-width: 1180px; margin: 0 auto; padding-block: 40px; padding-left: 24px; padding-right: 24px;
+    min-height: 100vh; display: grid; gap: 48px; align-items: center;
+    grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+    max-width: 1660px; margin: 0 auto;
+    padding-block: 32px; padding-left: 28px; padding-right: 28px;
   }
 
   h1 { font-size: 34px; letter-spacing: .22em; margin: 0 0 10px; font-weight: 600; }
@@ -39,15 +42,28 @@
 
   .src { color: #454b57; font-size: 11px; letter-spacing: .08em; margin: 26px 0 0; }
 
-  .gallery { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
-  .gallery figure { margin: 0; border: 1px solid var(--hairline); background: var(--panel); }
+  /* The gallery is ~0.79 as tall as it is wide, so capping its width against the
+     viewport height is what keeps the page to a single screen. */
+  .gallery {
+    display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    width: min(100%, calc((100vh - 120px) * 1.26));
+    justify-self: center;
+  }
+  .gallery figure { margin: 0; border: 1px solid var(--hairline); }
   .gallery .wide { grid-column: 1 / -1; }
   .gallery img { display: block; width: 100%; height: auto; }
-  .gallery figcaption { font-size: 10px; letter-spacing: .18em; color: #454b57;
-                        padding: 7px 10px; border-top: 1px solid var(--hairline); }
 
-  @media (max-width: 820px) {
-    .wrap { grid-template-columns: 1fr; min-height: 0; gap: 32px; }
+  /* On a large display the whole column reads small next to the shots. */
+  @media (min-width: 1500px) {
+    h1 { font-size: 42px; }
+    .tag { font-size: 15px; }
+    .get { font-size: 14px; padding: 13px 24px; }
+    ol li { font-size: 13px; }
+  }
+
+  @media (max-width: 860px) {
+    .wrap { grid-template-columns: minmax(0, 1fr); min-height: 0; gap: 32px; }
+    .gallery { width: 100%; }
   }
 </style>
 </head>
@@ -76,15 +92,12 @@
   <div class="gallery">
     <figure class="wide">
       <img src="shots/stats.png" alt="Statistics panel with a year-long focus heatmap" width="1592" height="784">
-      <figcaption>STATISTICS &middot; FOCUS MAP</figcaption>
     </figure>
     <figure>
       <img src="shots/timer.png" alt="Timer running a flow phase" width="720" height="424">
-      <figcaption>FLOW</figcaption>
     </figure>
     <figure>
       <img src="shots/break.png" alt="Timer running a break phase" width="720" height="424">
-      <figcaption>BREAK</figcaption>
     </figure>
   </div>
 </main>

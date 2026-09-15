@@ -23,7 +23,7 @@ final class Settings: ObservableObject {
     private init() {
         d.register(defaults: [
             "flowMinutes": 50, "breakMinutes": 5, "sessionCount": 4,
-            "autoStartBreak": true, "autoStartFlow": false,
+            "autoStartBreak": false, "autoStartFlow": false,
             "playSound": true, "notify": true, "showTimeInMenuBar": true,
         ])
         flowMinutes = d.integer(forKey: "flowMinutes")
